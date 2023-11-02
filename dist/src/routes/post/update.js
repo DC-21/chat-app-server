@@ -17,7 +17,7 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.updatePostRouter = router;
 const post_1 = __importDefault(require("../../models/post"));
-router.put('/api/post/update/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.put("/api/post/update/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { content, title } = req.body;
     if (!id) {
@@ -25,5 +25,16 @@ router.put('/api/post/update/:id', (req, res, next) => __awaiter(void 0, void 0,
         error.status = 400;
         next(error);
     }
-    const updatePost = yield post_1.default.findOneAndUpdate({ _id: id }, { $set: { content, title } }, { new: true });
+    let updatedPost;
+    try {
+        const updatedPost = yield post_1.default.findOneAndUpdate({
+            _id: id,
+        }, { $set: { content, title } }, { new: true });
+    }
+    catch (err) {
+        const error = new Error("post cannot e updated");
+        error.status = 400;
+        next(error);
+    }
+    res.status(200).send(updatedPost);
 }));
