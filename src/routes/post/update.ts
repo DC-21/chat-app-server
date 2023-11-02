@@ -14,6 +14,7 @@ router.put(
       error.status = 400;
       next(error);
     }
+    let updatedPost;
     try {
       const updatedPost = await Post.findOneAndUpdate(
         {
@@ -21,12 +22,13 @@ router.put(
         },
         { $set: { content, title } },
         { new: true }
-      )
+      );
     } catch (err) {
       const error = new Error("post cannot e updated") as CustomError;
-      error.status=400;
-      next(error)
+      error.status = 400;
+      next(error);
     }
+    res.status(200).send(updatedPost);
   }
 );
 
