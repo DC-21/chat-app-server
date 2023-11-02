@@ -8,15 +8,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.newPostRouter = void 0;
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.newPostRouter = router;
+const post_1 = __importDefault(require("../../models/post"));
 router.post('/api/new/post', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, content } = req.body;
     if (!title || !content) {
         const error = new Error("title and content required");
         error.status = 400;
+        return next(error);
     }
+    const newPost = new post_1.default({
+        title,
+        content
+    });
+    yield newPost.save();
+    res.status(201).send(newPost);
 }));

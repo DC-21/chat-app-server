@@ -45,6 +45,14 @@ app.use((0, body_parser_1.urlencoded)({
     extended: true,
 }));
 app.use((0, body_parser_1.json)());
+//middleware
+app.use((error, req, res, next) => {
+    if (error.status) {
+        return res.status(error.status).json({ message: error.message });
+    }
+    res.status(500).json({ message: "something went wrong" });
+});
+//start server
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     if (!process.env.MONGO_URI)
         throw new Error("MONGO_URI is required");
