@@ -1,10 +1,10 @@
 import { Request, Router, Response, NextFunction } from "express";
 const router = Router();
 
-import Post from "src/models/post";
+import Post from '../../models/post';
 
-router.get(
-  "/api/post/show/:id",
+router.post(
+  "/api/post/show/",
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
 
@@ -12,9 +12,9 @@ router.get(
         const allPosts = await Post.find();
         return res.status(200).send(allPosts);
     }
-    const post = await Post.findOne({ _id:id });
+    const post = await Post.findOne({ _id:id }).populate("comments");
     res.status(200).send(post);
   }
 );
 
-export { router as ShowRouter };
+export { router as postRouter };

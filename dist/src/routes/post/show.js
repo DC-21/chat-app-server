@@ -12,23 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteRouter = void 0;
+exports.postRouter = void 0;
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-exports.deleteRouter = router;
+exports.postRouter = router;
 const post_1 = __importDefault(require("../../models/post"));
-router.delete('/api/post/delete/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/api/post/show/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (!id) {
-        const error = new Error("post idi is required");
-        error.status = 400;
-        next(error);
+        const allPosts = yield post_1.default.find();
+        return res.status(200).send(allPosts);
     }
-    try {
-        yield post_1.default.findOneAndDelete({ _id: id });
-    }
-    catch (err) {
-        next(new Error("post delete failed"));
-    }
-    res.send(200).json({ success: true });
+    const post = yield post_1.default.findOne({ _id: id }).populate("comments");
+    res.status(200).send(post);
 }));
