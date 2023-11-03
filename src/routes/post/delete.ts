@@ -7,7 +7,7 @@ router.delete('/api/post/delete/:id',async(req:Request,res:Response,next:NextFun
     const {id} = req.params;
     if(!id)
     {
-        const error = new Error("post idi is required") as CustomError;
+        const error = new Error("post id is required") as CustomError;
         error.status=400;
         next(error);
     }
@@ -21,4 +21,4 @@ router.delete('/api/post/delete/:id',async(req:Request,res:Response,next:NextFun
     res.send(200).json({success: true})
 })
 
-export{ router as deleteRouter}
+export{ router as deletePostRouter}

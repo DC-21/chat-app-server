@@ -12,23 +12,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deletePostRouter = void 0;
+exports.deleteCommentRouter = void 0;
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-exports.deletePostRouter = router;
+exports.deleteCommentRouter = router;
+const comment_1 = __importDefault(require("../../models/comment"));
 const post_1 = __importDefault(require("../../models/post"));
-router.delete('/api/post/delete/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    if (!id) {
+router.delete('/api/comment/:commentId/delete/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { commentId, postId } = req.params;
+    if (!commentId || postId) {
         const error = new Error("post id is required");
         error.status = 400;
         next(error);
     }
     try {
-        yield post_1.default.findOneAndDelete({ _id: id });
+        yield comment_1.default.findOneAndDelete({ _id: commentId });
     }
     catch (err) {
-        next(new Error("post delete failed"));
+        next(new Error("comment delete failed"));
     }
+    yield post_1.default.findOneAndUpdate({ _id: postId }, { $pull: { comment: commentId } });
     res.send(200).json({ success: true });
 }));

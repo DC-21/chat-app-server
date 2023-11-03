@@ -17,6 +17,7 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.newCommentRouter = router;
 const comment_1 = __importDefault(require("../../models/comment"));
+const post_1 = __importDefault(require("../../models/post"));
 router.post('/api/comment/new/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userName, content } = req.body;
     const { postId } = req.params;
@@ -30,5 +31,6 @@ router.post('/api/comment/new/:id', (req, res, next) => __awaiter(void 0, void 0
         content
     });
     yield newComment.save();
-    res.status(201).send(newComment);
+    const updatedPost = yield post_1.default.findOneAndUpdate({ _id: postId }, { $push: { comments: newComment } }, { new: true });
+    res.status(201).send(updatedPost);
 }));
