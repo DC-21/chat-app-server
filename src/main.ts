@@ -6,6 +6,7 @@ import { json, urlencoded } from "body-parser";
 import mongoose from "mongoose";
 import {newPostRouter,updatePostRouter,deletePostRouter,showPostRouter,newCommentRouter,deleteCommentRouter} from './routes';
 import cors from 'cors';
+import cookieSession from 'cookie-session';
 
 const app = express();
 app.use(cors(
@@ -14,12 +15,18 @@ app.use(cors(
     optionsSuccessStatus: 200,
   }
 ));
+app.set('trust proxy', true);
 app.use(
   urlencoded({
-    extended: true,
+    extended: false,
   })
 );
+
 app.use(json());
+app.use(cookieSession({
+  signed:false,
+  secure:false
+}));
 
 //routes
 app.use(newPostRouter);
@@ -51,6 +58,8 @@ app.use((error: CustomError,req: Request,res: Response,next: NextFunction)=>{
 //start server
 const start = async () => {
   if (!process.env.MONGO_URI) throw new Error("MONGO_URI is required");
+
+  if (!process.env.JWT_KEY) throw new Error("JWT_KEY is required");
   try {
     await mongoose.connect(process.env.MONGO_URI);
     console.log("connected to MongoDB");

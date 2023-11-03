@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 const router = Router();
 import User from "../../models/user";
+import jwt from 'jsonwebtoken';
 
 router.post(
   "/signup",
@@ -15,6 +16,9 @@ router.post(
       password,
     });
     await newUser.save();
+    req.session = {
+      jwt: jwt.sign({ email,userId: newUser._id}, process.env.JWT_KEY!)
+    }
     res.status(200).json(newUser);
   }
 );
