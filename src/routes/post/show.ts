@@ -17,4 +17,4 @@ router.post(
   }
 );
 
-export { router as postRouter };
+export { router as showPostRouter };

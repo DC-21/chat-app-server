@@ -4,6 +4,7 @@ dotenv.config();
 import express,{Request,Response,NextFunction} from "express";
 import { json, urlencoded } from "body-parser";
 import mongoose from "mongoose";
+import {newPostRouter,updatePostRouter,deletePostRouter,showPostRouter,newCommentRouter,deleteCommentRouter} from './routes';
 
 const app = express();
 app.use(
