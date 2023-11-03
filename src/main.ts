@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import {newPostRouter,updatePostRouter,deletePostRouter,showPostRouter,newCommentRouter,deleteCommentRouter} from './routes';
 import cors from 'cors';
 import cookieSession from 'cookie-session';
+import { currentUser, requireAuth } from '../common';
 
 const app = express();
 app.use(cors(
@@ -27,14 +28,17 @@ app.use(cookieSession({
   signed:false,
   secure:false
 }));
+app.use(currentUser);
 
 //routes
-app.use(newPostRouter);
-app.use(updatePostRouter);
-app.use(deletePostRouter);
+
+app.use(requireAuth,newPostRouter);
+app.use(requireAuth,updatePostRouter);
+app.use(requireAuth,deletePostRouter);
 app.use(showPostRouter);
-app.use(newCommentRouter);
-app.use(deleteCommentRouter);
+
+app.use(requireAuth,newCommentRouter);
+app.use(requireAuth,deleteCommentRouter);
 
 app.all('*',(req,res,next)=>{
   const error = new Error('not found') as CustomError;
