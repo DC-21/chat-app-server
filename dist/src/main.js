@@ -40,11 +40,29 @@ dotenv.config();
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = require("body-parser");
 const mongoose_1 = __importDefault(require("mongoose"));
+const routes_1 = require("./routes");
+const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)({
+    origin: "*",
+    optionsSuccessStatus: 200,
+}));
 app.use((0, body_parser_1.urlencoded)({
     extended: true,
 }));
 app.use((0, body_parser_1.json)());
+//routes
+app.use(routes_1.newPostRouter);
+app.use(routes_1.updatePostRouter);
+app.use(routes_1.deletePostRouter);
+app.use(routes_1.showPostRouter);
+app.use(routes_1.newCommentRouter);
+app.use(routes_1.deleteCommentRouter);
+app.all('*', (req, res, next) => {
+    const error = new Error('not found');
+    error.status = 404;
+    next();
+});
 //middleware
 app.use((error, req, res, next) => {
     if (error.status) {
@@ -63,7 +81,7 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         throw new Error("database error!");
     }
-    app.listen(8000, () => {
+    app.listen(process.env.PORT, () => {
         console.log("server is running on port 8k");
     });
 });

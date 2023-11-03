@@ -5,14 +5,35 @@ import express,{Request,Response,NextFunction} from "express";
 import { json, urlencoded } from "body-parser";
 import mongoose from "mongoose";
 import {newPostRouter,updatePostRouter,deletePostRouter,showPostRouter,newCommentRouter,deleteCommentRouter} from './routes';
+import cors from 'cors';
 
 const app = express();
+app.use(cors(
+  {
+    origin: "*",
+    optionsSuccessStatus: 200,
+  }
+));
 app.use(
   urlencoded({
     extended: true,
   })
 );
 app.use(json());
+
+//routes
+app.use(newPostRouter);
+app.use(updatePostRouter);
+app.use(deletePostRouter);
+app.use(showPostRouter);
+app.use(newCommentRouter);
+app.use(deleteCommentRouter);
+
+app.all('*',(req,res,next)=>{
+  const error = new Error('not found') as CustomError;
+  error.status=404;
+  next();
+});
 declare global{
   interface CustomError extends Error{
     status?: number
@@ -36,7 +57,7 @@ const start = async () => {
   } catch (err) {
     throw new Error("database error!");
   }
-  app.listen(8000, () => {
+  app.listen(process.env.PORT, () => {
     console.log("server is running on port 8k");
   });
 };

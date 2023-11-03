@@ -17,7 +17,7 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.newPostRouter = router;
 const post_1 = __importDefault(require("../../models/post"));
-router.post('/api/new/post', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/api/post/new', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, content } = req.body;
     if (!title || !content) {
         const error = new Error("title and content required");

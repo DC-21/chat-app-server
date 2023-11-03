@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postRouter = void 0;
+exports.showPostRouter = void 0;
 const express_1 = require("express");
 const router = (0, express_1.Router)();
-exports.postRouter = router;
+exports.showPostRouter = router;
 const post_1 = __importDefault(require("../../models/post"));
 router.post("/api/post/show/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
