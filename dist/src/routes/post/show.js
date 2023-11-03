@@ -17,7 +17,7 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.showPostRouter = router;
 const post_1 = __importDefault(require("../../models/post"));
-router.post("/api/post/show/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.get('/api/post/show/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     if (!id) {
         const allPosts = yield post_1.default.find();

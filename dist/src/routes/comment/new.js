@@ -18,7 +18,7 @@ const router = (0, express_1.Router)();
 exports.newCommentRouter = router;
 const comment_1 = __importDefault(require("../../models/comment"));
 const post_1 = __importDefault(require("../../models/post"));
-router.post('/api/comment/new/:id', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+router.post('/api/comment/new/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userName, content } = req.body;
     const { postId } = req.params;
     if (!content) {

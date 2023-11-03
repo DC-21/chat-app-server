@@ -3,7 +3,7 @@ const router = Router();
 import Comment from '../../models/comment';
 import Post from '../../models/post';
 
-router.post('/api/comment/new/:id',async(req:Request,res:Response,next:NextFunction)=>{
+router.post('/api/comment/new/:postId',async(req:Request,res:Response,next:NextFunction)=>{
     const {userName,content} = req.body;
     const {postId} = req.params;
 
