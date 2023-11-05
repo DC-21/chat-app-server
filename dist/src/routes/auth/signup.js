@@ -17,15 +17,20 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.signupRouter = router;
 const user_1 = __importDefault(require("../../models/user"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const common_1 = require("../../../common");
 router.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield user_1.default.findOne({ email });
     if (user)
-        return new Error("user with that email already exists");
+        return next(new common_1.BadRequestError("user with that email already exists"));
     const newUser = new user_1.default({
         email,
         password,
     });
     yield newUser.save();
-    res.status(200).json(newUser);
+    req.session = {
+        jwt: jsonwebtoken_1.default.sign({ email, userId: newUser._id }, process.env.JWT_KEY, { expiresIn: '10h' })
+    };
+    res.status(200).send(newUser);
 }));

@@ -12,11 +12,15 @@ import {
 
   newCommentRouter,
   deleteCommentRouter,
+  signupRouter,
+  signinRouter,
+  currentUserRouter,
   
 } from "./routes";
 import cors from "cors";
 import cookieSession from "cookie-session";
 import { currentUser, requireAuth } from "../common";
+import { signoutRouter } from "./routes/auth/signout";
 
 const app = express();
 app.use(
@@ -42,6 +46,10 @@ app.use(
 app.use(currentUser);
 
 //routes
+app.use(signupRouter);
+app.use(signinRouter);
+app.use(signoutRouter);
+app.use(currentUserRouter);
 
 app.use(requireAuth, newPostRouter);
 app.use(requireAuth, updatePostRouter);

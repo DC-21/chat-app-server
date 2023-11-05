@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
+const common_1 = require("../../common");
 const userSchema = new mongoose_1.default.Schema({
     email: {
         type: String,
@@ -30,7 +31,13 @@ const userSchema = new mongoose_1.default.Schema({
     ]
 });
 userSchema.pre('save', function (done) {
-    return __awaiter(this, void 0, void 0, function* () { });
+    return __awaiter(this, void 0, void 0, function* () {
+        if (this.isModified('password') || this.isNew) {
+            const hashedPwd = common_1.authenticationService.pwdToHash(this.get('password'));
+            this.set('password, hashed');
+        }
+        done();
+    });
 });
 const User = mongoose_1.default.model("User", userSchema);
 exports.default = User;

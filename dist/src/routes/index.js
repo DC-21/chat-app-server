@@ -20,3 +20,7 @@ __exportStar(require("./post/show"), exports);
 __exportStar(require("./post/update"), exports);
 __exportStar(require("./comment/new"), exports);
 __exportStar(require("./comment/delete"), exports);
+__exportStar(require("./auth/current-user"), exports);
+__exportStar(require("./auth/signup"), exports);
+__exportStar(require("./auth/signin"), exports);
+__exportStar(require("./auth/signout"), exports);

@@ -17,15 +17,17 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.signinRouter = router;
 const user_1 = __importDefault(require("../../models/user"));
+const common_1 = require("../../../common");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 router.post("/signin", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield user_1.default.findOne({ email });
     if (!user)
-        return new Error("no user with that email");
-    const newUser = new user_1.default({
-        email,
-        password,
-    });
-    yield newUser.save();
-    res.status(200).json(newUser);
+        return next(new common_1.BadRequestError("no user with that email"));
+    const isEqual = yield common_1.authenticationService.pwdCompare(user.password, password);
+    if (!isEqual)
+        return next(new common_1.BadRequestError("wrong password"));
+    const token = jsonwebtoken_1.default.sign({ email, userId: user._id }, process.env.JWT_KEY, { expiresIn: '10h' });
+    req.session = { jwt: token };
+    res.status(200).send(user);
 }));

@@ -3,14 +3,13 @@ const router = Router();
 
 import Comment from '../../models/comment';
 import Post from "../../models/post";
+import { BadRequestError } from "../../../common";
 
 router.delete('/api/comment/:commentId/delete/:postId',async(req:Request,res:Response,next:NextFunction)=>{
     const {commentId,postId} = req.params;
     if(!commentId || postId)
     {
-        const error = new Error("post id is required") as CustomError;
-        error.status=400;
-        next(error);
+        next(new BadRequestError("post id is required"));
     }
     try
     {

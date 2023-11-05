@@ -14,4 +14,11 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-__exportStar(require("./services/authentication"), exports);
+__exportStar(require("./src/services/authentication"), exports);
+__exportStar(require("./src/middlewares/current-users"), exports);
+__exportStar(require("./src/middlewares/require-auth"), exports);
+__exportStar(require("./src/errors/bad-request-error"), exports);
+__exportStar(require("./src/errors/database-connection-error"), exports);
+__exportStar(require("./src/errors/not-authorized-error"), exports);
+__exportStar(require("./src/errors/not-found-error"), exports);
+__exportStar(require("./src/errors/custom-error"), exports);

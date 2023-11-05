@@ -18,12 +18,11 @@ const router = (0, express_1.Router)();
 exports.deleteCommentRouter = router;
 const comment_1 = __importDefault(require("../../models/comment"));
 const post_1 = __importDefault(require("../../models/post"));
+const common_1 = require("../../../common");
 router.delete('/api/comment/:commentId/delete/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { commentId, postId } = req.params;
     if (!commentId || postId) {
-        const error = new Error("post id is required");
-        error.status = 400;
-        next(error);
+        next(new common_1.BadRequestError("post id is required"));
     }
     try {
         yield comment_1.default.findOneAndDelete({ _id: commentId });

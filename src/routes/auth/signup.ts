@@ -2,6 +2,7 @@ import { Router, Request, Response, NextFunction } from "express";
 const router = Router();
 import User from "../../models/user";
 import jwt from 'jsonwebtoken';
+import { BadRequestError } from "../../../common";
 
 router.post(
   "/signup",
@@ -9,7 +10,7 @@ router.post(
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (user) return new Error("user with that email already exists");
+    if (user) return next(new BadRequestError("user with that email already exists"));
 
     const newUser = new User({
       email,
@@ -17,9 +18,9 @@ router.post(
     });
     await newUser.save();
     req.session = {
-      jwt: jwt.sign({ email,userId: newUser._id}, process.env.JWT_KEY!), { expiresIn: '10h' }
+      jwt: jwt.sign({ email,userId: newUser._id}, process.env.JWT_KEY!,{ expiresIn: '10h' })
     }
-    res.status(200).json(newUser);
+    res.status(200).send(newUser)
   }
 );
 

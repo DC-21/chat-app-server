@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { authenticationService } from "common";
+import { authenticationService } from "../../common";
 
 const userSchema = new mongoose.Schema({
   email: {
