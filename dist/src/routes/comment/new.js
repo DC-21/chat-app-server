@@ -23,9 +23,7 @@ router.post('/api/comment/new/:postId', (req, res, next) => __awaiter(void 0, vo
     const { userName, content } = req.body;
     const { postId } = req.params;
     if (!content) {
-        const error = new common_1.BadRequestError("content required");
-        error.status = 400;
-        return next(error);
+        const error = next(new common_1.BadRequestError("content required"));
     }
     const newComment = new comment_1.default({
         userName: userName ? userName : 'anonymous',
