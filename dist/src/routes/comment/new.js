@@ -18,11 +18,12 @@ const router = (0, express_1.Router)();
 exports.newCommentRouter = router;
 const comment_1 = __importDefault(require("../../models/comment"));
 const post_1 = __importDefault(require("../../models/post"));
+const common_1 = require("../../../common");
 router.post('/api/comment/new/:postId', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { userName, content } = req.body;
     const { postId } = req.params;
     if (!content) {
-        const error = new Error("content required");
+        const error = new common_1.BadRequestError("content required");
         error.status = 400;
         return next(error);
     }
