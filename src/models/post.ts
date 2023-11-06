@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import { CommentDoc } from "./comment";
 
 export interface PostDoc extends mongoose.Document{
   title: string,
   content: string,
-  comments: Array<any>
+  comments: Array<CommentDoc>
 }
 
 export interface CreatePostDto {
