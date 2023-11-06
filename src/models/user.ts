@@ -5,7 +5,7 @@ import { PostDoc } from "./post";
 export interface UserDoc extends mongoose.Document {
   email: string,
   password: string,
-  posts: Array<PostDoc>
+  posts?: Array<PostDoc>
 }
 
 export interface CreateUserDto {

@@ -9,7 +9,7 @@ router.post('/api/post/new',async(req:Request,res:Response,next:NextFunction)=>{
     {
         const error = next(new BadRequestError("title and content is required"));
     }
-    const newPost = new Post({
+    const newPost = Post.build({
         title,
         content
     });
