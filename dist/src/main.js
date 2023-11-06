@@ -97,7 +97,7 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
         throw new Error("database error!");
     }
     app.listen(process.env.PORT, () => {
-        console.log("server is running on port 8k");
+        console.log("server is running on port 9k");
     });
 });
 start();

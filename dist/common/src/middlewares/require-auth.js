@@ -10,9 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.requireAuth = void 0;
+const not_authorized_error_1 = require("../errors/not-authorized-error");
 const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.currentUser)
-        return next(new Error('not authorized'));
+        return next(new not_authorized_error_1.NotAuthorizedError('Not Authorized'));
     next();
 });
 exports.requireAuth = requireAuth;

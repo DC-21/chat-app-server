@@ -17,12 +17,11 @@ const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.newPostRouter = router;
 const post_1 = __importDefault(require("../../models/post"));
+const common_1 = require("../../../common");
 router.post('/api/post/new', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { title, content } = req.body;
     if (!title || !content) {
-        const error = new Error("title and content required");
-        error.status = 400;
-        return next(error);
+        const error = next(new common_1.BadRequestError("title and content is required"));
     }
     const newPost = new post_1.default({
         title,

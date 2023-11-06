@@ -16,14 +16,13 @@ exports.updatePostRouter = void 0;
 const express_1 = require("express");
 const router = (0, express_1.Router)();
 exports.updatePostRouter = router;
+const common_1 = require("../../../common");
 const post_1 = __importDefault(require("../../models/post"));
 router.put("/api/post/update/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { content, title } = req.body;
     if (!id) {
-        const error = new Error("post id is required");
-        error.status = 400;
-        next(error);
+        return next(new common_1.BadRequestError("post id is required"));
     }
     let updatedPost;
     try {
@@ -32,9 +31,7 @@ router.put("/api/post/update/:id", (req, res, next) => __awaiter(void 0, void 0,
         }, { $set: { content, title } }, { new: true });
     }
     catch (err) {
-        const error = new Error("post cannot e updated");
-        error.status = 400;
-        next(error);
+        return next(new common_1.BadRequestError("post cannot be updated"));
     }
     res.status(200).send(updatedPost);
 }));

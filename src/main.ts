@@ -19,7 +19,7 @@ import {
 } from "./routes";
 import cors from "cors";
 import cookieSession from "cookie-session";
-import { currentUser, requireAuth } from "../common";
+import { currentUser, errorHandler, requireAuth,NotFoundError } from "../common";
 import { signoutRouter } from "./routes/auth/signout";
 
 const app = express();
@@ -60,25 +60,11 @@ app.use(requireAuth, newCommentRouter);
 app.use(requireAuth, deleteCommentRouter);
 
 app.all("*", (req, res, next) => {
-  const error = new Error("not found") as CustomError;
-  error.status = 404;
-  next();
+  next(new NotFoundError('not found'));
 });
-declare global {
-  interface CustomError extends Error {
-    status?: number;
-  }
-}
 
 //middleware
-app.use(
-  (error: CustomError, req: Request, res: Response, next: NextFunction) => {
-    if (error.status) {
-      return res.status(error.status).json({ message: error.message });
-    }
-    res.status(500).json({ message: "something went wrong" });
-  }
-);
+app.use(errorHandler);
 
 //start server
 const start = async () => {
@@ -92,7 +78,7 @@ const start = async () => {
     throw new Error("database error!");
   }
   app.listen(process.env.PORT, () => {
-    console.log("server is running on port 8k");
+    console.log("server is running on port 9k");
   });
 };
 start();
