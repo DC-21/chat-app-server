@@ -10,9 +10,12 @@ router.delete('/api/post/delete/:id',async(req:Request,res:Response,next:NextFun
     {
         const error = next(new BadRequestError("post id is required"));
     }
+    let user;
+
     try
     {
-        await Post.findOneAndDelete({_id:id})
+        await Post.findOneAndDelete({_id:id});
+        user = await
     } catch(err)
     {
         next(new Error("post delete failed"));
